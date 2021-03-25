@@ -1,2 +1,2 @@
-# Microsservi-os
+# Microsserviços
 Projeto para aula de microsserviços
