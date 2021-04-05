@@ -1,7 +1,8 @@
 class Activity
 {
-    constructor(name, grade, studentId)
+    constructor(id, name, grade, studentId)
     {
+        this.id = id;
         this.name = name;
         this.grade = grade;
         this.studentId = studentId;
