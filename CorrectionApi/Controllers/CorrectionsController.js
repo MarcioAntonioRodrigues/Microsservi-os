@@ -1,18 +1,23 @@
-// Microsserviço de Correçoes de atividades
+// Microsserviço de Correçoes
 
-const http = require('http');
 const express = require('express');
-const CorrectedActivity = require('../Models/CorrectedActivity');
+const { publishToQueue } = require("../Services/CorrectionService");
 
 const port = 3002
 const app = express()
 
-app.post('/saveCorrection', (req, res) => {
-    const corrected = new CorrectedActivity();
-    corrected.grade = req.body.grade;
-    corrected.student = req.body.student;
-    corrected.activity = req.body.activity;
-    console.log('correcao', corrected);
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
+
+app.post('/msg', async (req, res, next) => {
+    
+    let { queueName, payload } = req.body;
+    
+    await publishToQueue(
+        "corrected activity",
+        JSON.stringify({ queueName, payload }));
+        res.status(200).send("Nota atribuída!");
+    // next();
 });
 
 app.listen(port, () => {

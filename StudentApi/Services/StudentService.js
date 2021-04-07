@@ -3,7 +3,6 @@ var localStorage = new LocalStorage('../scratch');
 
 class StudentService {
 
-
     addStudent(student) {
         let studentsList = localStorage.getItem("studentsList")
         let parseStudentList;
@@ -14,6 +13,7 @@ class StudentService {
         parseStudentList.push(student)
         localStorage.setItem("studentsList", JSON.stringify(parseStudentList))
     }
+    
 }
 
 module.exports = StudentService;

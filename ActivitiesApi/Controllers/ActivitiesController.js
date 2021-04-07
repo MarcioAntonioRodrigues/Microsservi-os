@@ -4,6 +4,7 @@ const http = require('http');
 const express = require('express');
 const Activity = require('../Models/Activity');
 const ActivityDto = require('../Models/ActivityDto');
+const ActivityService = require('../Services/ActivtyService')
 
 const port = 3001
 const app = express()
@@ -26,24 +27,27 @@ app.post('/create', (req, res) => {
     activity.id = req.body.id;
     activity.name = req.body.name;
     // activity.grade = null;
-    // activity.studentId = req.body.studentId;
-    addActivity(activity);
+    activity.studentId = req.body.studentId;
+    const activityService = new ActivityService();
+    activityService.addActivity(activity);
     res.send(`Criando Dados de ${activity.name}!`);
 })
 
 app.get('/getActivityByIdStudent/:id', (req, res) =>
 {
     let studentId = req.params.id;
-    let activity = new Activity();
+    let activitiesList = [];
     var listaDeAtividades = localStorage.getItem("listaDeAtividades")
     listaDeAtividades = JSON.parse(listaDeAtividades)
     listaDeAtividades.forEach(a => {
-        if(a.studentId == studentId)
+        if (a.studentId === studentId)
         {
+            let activity = new Activity();
             activity.id = a.id;
             activity.name = a.name;
             activity.grade = a.grade;
             activity.studentId = a.studentId;
+            activitiesList.push(activity);
         }
     });
     
@@ -57,27 +61,17 @@ app.get('/getActivityByIdStudent/:id', (req, res) =>
         resp.on('end', () => {
         student = JSON.parse(data)
         });
-    })
+    });
 
-    setTimeout(() => {
-        let activityDto = new ActivityDto();
-        activityDto.student = student;
-        activityDto.activity = activity;
-        res.json(activityDto)
-    }, 2000);
-
+    if (activitiesList.length > 0)
+        setTimeout(() => {
+            let activityDto = new ActivityDto();
+            activityDto.student = student;
+            activityDto.activitiesList = activitiesList;
+            res.json(activityDto)
+        }, 2000);
+    else res.json([]);
 })
-
-function addActivity(activity)
-{
-    let listaDeAtividades = localStorage.getItem("listaDeAtividades")
-    let parselistaDeAtividades;
-    if(parselistaDeAtividades != null)
-        parselistaDeAtividades = JSON.parse(listaDeAtividades);
-    else parselistaDeAtividades = []
-    parselistaDeAtividades.push(activity)
-    localStorage.setItem("listaDeAtividades", JSON.stringify(parselistaDeAtividades))
-}
 
 app.listen(port, () => {
     console.log(`Controller de Atividades escutando em http://localhost:${port}`)

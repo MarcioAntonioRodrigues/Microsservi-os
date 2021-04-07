@@ -1,9 +1,9 @@
 class ActivityDto
 {
-    constructor(activity, student)
+    constructor(activitiesList, student)
     {
         this.student = student;
-        this.activity = activity;
+        this.activitiesList = activitiesList;
     }
 }
 
