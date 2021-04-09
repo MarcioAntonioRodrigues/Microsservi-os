@@ -11,11 +11,11 @@ app.use(bodyParser.json());
 
 app.post('/msg', async (req, res, next) => {
     
-    let { queueName, payload } = req.body;
+    let { grade, name, studentId } = req.body;
     
     await publishToQueue(
         "corrected activity",
-        JSON.stringify({ queueName, payload }));
+        JSON.stringify({ grade, name, studentId }));
         res.status(200).send("Nota atribuída!");
     // next();
 });

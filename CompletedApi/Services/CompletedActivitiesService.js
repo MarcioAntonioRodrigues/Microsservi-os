@@ -1,4 +1,5 @@
-var amqp = require('amqplib/callback_api');
+const amqp = require('amqplib/callback_api');
+const Activity = require('../../ActivitiesApi/Models/Activity');
 
 var LocalStorage = require('node-localstorage').LocalStorage
 var localStorage = new LocalStorage('../scratch');
@@ -12,10 +13,17 @@ amqp.connect(CONN_URL, function (err, conn)
         ch.consume(
             "corrected activity",
             function (msg) {
-                const { queueName, payload } = JSON.parse(
+                const { grade, name, studentId } = JSON.parse(
                     msg.content.toString()
                 );
-                saveCompletedActivities(queueName, payload);
+
+                const activityCorrected = new Activity();
+                activityCorrected.id = saveLastId();
+                activityCorrected.grade = grade;
+                activityCorrected.name = name;
+                activityCorrected.studentId = studentId;
+
+                saveCompletedActivities(activityCorrected);
                 ch.ack(msg);
             },
             { noAck: false }
@@ -23,15 +31,32 @@ amqp.connect(CONN_URL, function (err, conn)
     });
 });
 
-const saveCompletedActivities = (ActivityName, activity) =>
+const saveCompletedActivities = (activity) =>
 {
-    let listaDeAtividades = localStorage.getItem("Atividades Corrigidas")
+    let listaDeAtividades = localStorage.getItem("Atividades_Corrigidas")
     let parselistaDeAtividades;
-    if (listaDeAtividades != null)
+    if (listaDeAtividades != '')
         parselistaDeAtividades = JSON.parse(listaDeAtividades);
     else parselistaDeAtividades = []
     parselistaDeAtividades.push(activity)
-    localStorage.setItem("Atividades Corrigidas", JSON.stringify(parselistaDeAtividades))
+    localStorage.setItem("Atividades_Corrigidas", JSON.stringify(parselistaDeAtividades))
+}
+
+const saveLastId = () =>
+{
+    let lastId = localStorage.getItem('last_id_saved')
+    if (lastId != '')
+    {
+        lastId = JSON.parse(lastId);
+        lastId = parseInt(lastId);
+    }
+    else
+    {
+        lastId = 0
+    }
+    lastId += 1;
+    localStorage.setItem('last_id_saved', JSON.stringify(lastId));
+    return lastId;
 }
 
 module.exports = 

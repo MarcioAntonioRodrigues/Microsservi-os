@@ -1,4 +1,6 @@
 require('../Services/CompletedActivitiesService')
+var LocalStorage = require('node-localstorage').LocalStorage;
+var localStorage = new LocalStorage('../scratch');
 
 const express = require('express');
 
@@ -8,9 +10,11 @@ const app = express()
 
 app.get('/getCorrectedActivities', async(req, res) =>
 {
-    var listaDeAtividades = localStorage.getItem("Atividades Corrigidas");
-    listaDeAtividades = JSON.parse(listaDeAtividades);
-    res.json(listaDeAtividades);
+    const listaDeAtividades = localStorage.getItem("Atividades_Corrigidas");
+    let parseListaDeAtividades = [];
+    if (listaDeAtividades != '')
+        parseListaDeAtividades = JSON.parse(listaDeAtividades);
+    res.json(parseListaDeAtividades);
 })
 
 
