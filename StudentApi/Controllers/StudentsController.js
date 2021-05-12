@@ -38,6 +38,7 @@ app.get('/getById/:id', (req, res) => {
 })
 
 //comentario de teste
+//comenario para release
 
 app.post('/createStudent', (req, res) => {
     let student = new Student();
