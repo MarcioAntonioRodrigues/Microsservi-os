@@ -1,7 +1,6 @@
 //Microsserviço de Turmas
 
 const express = require('express')
-// const Turma = require('../Models/Turma')
 
 const Student = require("../Models/Student")
 
