@@ -13,7 +13,14 @@ class StudentService {
         parseStudentList.push(student)
         localStorage.setItem("studentsList", JSON.stringify(parseStudentList))
     }
+
+    getClassName(idTurma)
+    {
+        if(idTurma === '0001')
+            return 'Turma de Engenharia'
+        else return 'Turma de Direito'
+    }
     
-}
+}//class
 
 module.exports = StudentService;
