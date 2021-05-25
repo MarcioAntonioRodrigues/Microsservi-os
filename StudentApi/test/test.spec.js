@@ -7,7 +7,7 @@ describe('Sudents Tests', () => {
         let studentService = new StudentService()
         let classId = '0001'
         const resultado = studentService.getClassName(classId)
-        expect(resultado).be.equal('Turma de pt')
+        expect(resultado).be.equal('Turma de Engenharia')
         done()
     })
 })
