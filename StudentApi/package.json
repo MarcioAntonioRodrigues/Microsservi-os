@@ -4,7 +4,7 @@
   "description": "Uma pequena API Node",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/test.spec.js --reporter mocha-junit-reporter --timeout 60000 --exit"
+    "test": ""
   },
   "keywords": [
     "node",
