@@ -18,3 +18,15 @@
 - Para testar rode o comando abaixo na raiz da API de estudantes (/studenApi):
 
 `mocha`
+
+## Swagger
+
+- Para verificar rodar o Swagger execute o comando na pasta raiz da api (studentApi, por exemplo). 
+
+`npm run swagger-autogen`
+
+- Este comando irá subir a aplicação também e o swagger pode ser verificado em:
+
+`http://localhost:3000/doc`
+
+
